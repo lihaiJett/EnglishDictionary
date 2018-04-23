@@ -52,7 +52,11 @@ public class ReciteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        try {
+            showExcel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.activity_recite);
 
@@ -60,31 +64,34 @@ public class ReciteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) ReciteActivity.this.findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    showExcel();
+
                     ReciteActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             // Create the adapter that will return a fragment for each of the three
                             // primary sections of the activity.
-                            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-                            // Set up the ViewPager with the sections adapter.
-                            mViewPager = (ViewPager) findViewById(R.id.container);
-                            mViewPager.setAdapter(mSectionsPagerAdapter);
+
+//                            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//                            fab.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View view) {
+//                                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                                            .setAction("Action", null).show();
+//                                }
+//                            });
 //                            mSectionsPagerAdapter.notifyDataSetChanged();
                         }
                     });
@@ -197,11 +204,11 @@ public class ReciteActivity extends AppCompatActivity {
         }
         public void setWord(MyWord myWord){
             this.myWord = myWord;
-            if(word!=null) {
-                num.setText(myWord.getNum());
-                word.setText(myWord.getWord());
-                mean.setText(myWord.getMean());
-                note.setText(myWord.getNote());
+            if(word!=null&& myWord!=null) {
+                num.setText(myWord.getNum()+"");
+                word.setText(myWord.getWord()+"");
+                mean.setText(myWord.getMean()+"");
+                note.setText(myWord.getNote()+"");
             }
         }
     }
@@ -222,11 +229,16 @@ public class ReciteActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(fragments[position%5]==null) {
-                fragments[position % 5] = PlaceholderFragment.newInstance(1);
-            }
-            fragments[position%5].setWord(wordList.get(position));
-            return fragments[position%5];
+//            if(fragments[position%5]==null) {
+//                fragments[position % 5] = PlaceholderFragment.newInstance(1);
+//            }
+//            fragments[position%5].setWord(wordList.get(position));
+            PlaceholderFragment p = PlaceholderFragment.newInstance(1);
+            Log.e("!!!!!!!!",position+"!");
+            p.setWord(wordList.get(position));
+            return p;
+
+
         }
 
         @Override
