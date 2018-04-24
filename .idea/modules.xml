@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EnglishDictionary.iml" filepath="$PROJECT_DIR$/EnglishDictionary.iml" />
+      <module fileurl="file://D:\lihai\测试素材临时备份或无太多用处\EnglishDictionary\EnglishDictionary.iml" filepath="D:\lihai\测试素材临时备份或无太多用处\EnglishDictionary\EnglishDictionary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\lihai\测试素材临时备份或无太多用处\EnglishDictionary\app\app.iml" filepath="D:\lihai\测试素材临时备份或无太多用处\EnglishDictionary\app\app.iml" />
     </modules>
   </component>
 </project>
