@@ -10,6 +10,7 @@ public class MyWord {
         private String mean;
         private String note;
 
+
     public MyWord() {
 
     }

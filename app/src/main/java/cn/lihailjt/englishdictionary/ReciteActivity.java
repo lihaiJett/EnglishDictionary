@@ -1,29 +1,19 @@
 package cn.lihailjt.englishdictionary;
 
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,11 +42,7 @@ public class ReciteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            showExcel();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         setContentView(R.layout.activity_recite);
 
@@ -64,25 +50,45 @@ public class ReciteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) ReciteActivity.this.findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
+                    getExcelData(getIntent().getStringExtra("filePath"));
                     ReciteActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-                            // Create the adapter that will return a fragment for each of the three
-                            // primary sections of the activity.
+                            // Set up the ViewPager with the sections adapter.
+                            mViewPager = (ViewPager) ReciteActivity.this.findViewById(R.id.container);
+                            mViewPager.setAdapter(mSectionsPagerAdapter);
 
+//                            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                                @Override
+//                                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onPageSelected(int position) {
+//                                    ProPreference pr = ProPreference.getProPreference(ReciteActivity.this,"UserData");
+//                                    pr.setPreference("CurNum", position);
+//                                }
+//
+//                                @Override
+//                                public void onPageScrollStateChanged(int state) {
+//
+//                                }
+//                            });
+//                            ProPreference pr = ProPreference.getProPreference(ReciteActivity.this,"UserData");
+//                            int cur = pr.getInt("CurNum", 0);
+//                            if(cur < mSectionsPagerAdapter.getCount()){
+//                                mViewPager.setCurrentItem(cur);
+//                            }
 
 //                            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //                            fab.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +108,9 @@ public class ReciteActivity extends AppCompatActivity {
         }).start();
 
     }
-    public void showExcel() throws Exception {
+    public void getExcelData(String filePath) throws Exception {
 
-        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(new File(Environment.getExternalStorageDirectory()+"/Dictionary.xls")));
+        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(new File(filePath)));
         HSSFSheet sheet = null;
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {// 获取每个Sheet表
             sheet = workbook.getSheetAt(i);
@@ -159,84 +165,36 @@ public class ReciteActivity extends AppCompatActivity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        TextView word;
-        TextView mean;
-        TextView note;
-        TextView num;
-        MyWord myWord;
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_recite, container, false);
-
-            word = (TextView) rootView.findViewById(R.id.word);
-            mean = (TextView) rootView.findViewById(R.id.mean);
-            note = (TextView) rootView.findViewById(R.id.note);
-            num = (TextView) rootView.findViewById(R.id.num);
-            word.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
-            setWord(myWord);
-            return rootView;
-        }
-        public void setWord(MyWord myWord){
-            this.myWord = myWord;
-            if(word!=null&& myWord!=null) {
-                num.setText(myWord.getNum()+"");
-                word.setText(myWord.getWord()+"");
-                mean.setText(myWord.getMean()+"");
-                note.setText(myWord.getNote()+"");
-            }
-        }
-    }
-
-    /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        PlaceholderFragment[] fragments = new PlaceholderFragment[5];
+        //WordViewFragment[] fragments = new WordViewFragment[5];
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-//            if(fragments[position%5]==null) {
-//                fragments[position % 5] = PlaceholderFragment.newInstance(1);
-//            }
-//            fragments[position%5].setWord(wordList.get(position));
-            PlaceholderFragment p = PlaceholderFragment.newInstance(1);
-            Log.e("!!!!!!!!",position+"!");
-            p.setWord(wordList.get(position));
-            return p;
+            WordViewFragment fragments;
+            fragments = WordViewFragment.newInstance(1);
+            fragments.setNextPageController(new WordViewFragment.NextPageController() {
+                @Override
+                public void toNext() {
+                    if(mViewPager.getCurrentItem()+1 < mViewPager.getAdapter().getCount()){
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
+                    }
+                }
+            });
+            fragments.setWord(wordList.get(position));
+//            WordViewFragment p = WordViewFragment.newInstance(1);
+//            Log.e("!!!!!!!!",position+"!");
+//            p.setWord(wordList.get(position));
+            return fragments;
 
 
         }
