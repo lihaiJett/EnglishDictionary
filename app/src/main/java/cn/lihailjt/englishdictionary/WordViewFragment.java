@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.lihailjt.englishdictionary.dataprovider.MyWord;
+
 /**
  * @author <a href="bbmgt@163.com">lihai</a>
  * @version 1.0.0
@@ -29,6 +31,11 @@ public class WordViewFragment extends Fragment {
     TextView mean;
     TextView note;
     TextView num;
+    TextView phonetic_symbol;
+    TextView phrase;
+    TextView derivative;
+    TextView frequency;
+    TextView sentence;
     Button btn;
     MyWord myWord;
     int stage;
@@ -63,6 +70,13 @@ public class WordViewFragment extends Fragment {
         note = (TextView) rootView.findViewById(R.id.note);
         num = (TextView) rootView.findViewById(R.id.num);
         btn = (Button) rootView.findViewById(R.id.btn);
+
+        phonetic_symbol = (TextView) rootView.findViewById(R.id.phonetic_symbol);
+        phrase = (TextView) rootView.findViewById(R.id.phrase);
+        derivative = (TextView) rootView.findViewById(R.id.derivative);
+        frequency = (TextView) rootView.findViewById(R.id.frequency);
+        sentence = (TextView) rootView.findViewById(R.id.sentence);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,30 +94,38 @@ public class WordViewFragment extends Fragment {
         if (word != null && myWord != null) {
             num.setText(String.valueOf(myWord.getNum()));
             word.setText(String.valueOf(myWord.getWord()));
+
+            phonetic_symbol.setText(String.valueOf(myWord.getPhonetic_symbol()));
+            phrase.setText(String.valueOf(myWord.getPhrase()));
+            derivative.setText(String.valueOf(myWord.getDerivative()));
+            frequency.setText(String.valueOf(myWord.getFrequency()));
+            sentence.setText(String.valueOf(myWord.getSentence()));
+
             mean.setText(String.valueOf(myWord.getMean()));
             note.setText(String.valueOf(myWord.getNote()));
 
-            mean.setVisibility(View.INVISIBLE);
-            note.setVisibility(View.INVISIBLE);
+//            mean.setVisibility(View.INVISIBLE);
+//            note.setVisibility(View.INVISIBLE);
             stage = 0;
         }
     }
 
     public void next() {
-        switch (stage) {
-            case 0:
-                mean.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                note.setVisibility(View.VISIBLE);
-                break;
-            default:
-                if (mNextPageController != null) {
-                    mNextPageController.toNext();
-                }
-                break;
-        }
-        stage++;
+        mNextPageController.toNext();
+//        switch (stage) {
+//            case 0:
+//                mean.setVisibility(View.VISIBLE);
+//                break;
+//            case 1:
+//                note.setVisibility(View.VISIBLE);
+//                break;
+//            default:
+//                if (mNextPageController != null) {
+//                    mNextPageController.toNext();
+//                }
+//                break;
+//        }
+//        stage++;
     }
 
 }

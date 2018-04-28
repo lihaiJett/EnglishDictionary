@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this,ReciteActivity.class);
             intent.putExtra("filePath",uri.getPath());
             startActivity(intent);
+
+
 //            String[] proj = {MediaStore.Images.Media.DATA};
 //            Cursor actualimagecursor = getContentResolver().query(uri, proj, null, null, null);
 //            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

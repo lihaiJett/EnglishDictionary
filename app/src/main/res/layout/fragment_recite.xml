@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -6,7 +6,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="cn.lihailjt.englishdictionary.cn.lihailjt.englishdictionary.WordViewFragment$PlaceholderFragment">
+                tools:context="cn.lihailjt.englishdictionary.WordViewFragment">
 
 
     <LinearLayout
@@ -23,10 +23,45 @@
             android:textSize="23sp"/>
 
         <TextView
+            android:id="@+id/phonetic_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="apple"
+            android:textSize="23sp"/>
+
+        <TextView
             android:id="@+id/mean"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="applead sfasdfasdf sdfasdf sdfasdf dsfasdf sdfasdfsa dsfsd"
+            android:textSize="23sp"/>
+
+        <TextView
+            android:id="@+id/phrase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="apple"
+            android:textSize="23sp"/>
+
+        <TextView
+            android:id="@+id/derivative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="apple"
+            android:textSize="23sp"/>
+
+        <TextView
+            android:id="@+id/frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="apple"
+            android:textSize="23sp"/>
+
+        <TextView
+            android:id="@+id/sentence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="apple"
             android:textSize="23sp"/>
 
         <TextView
@@ -35,22 +70,25 @@
             android:layout_height="wrap_content"
             android:text="applead sfasdfasdf sdfasdf sdfasdf dsfasdf sdfasdfsa dsfsd"
             android:textSize="23sp"/>
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:text=">>>"/>
+
+        <TextView
+            android:id="@+id/num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn"
+            android:text="1"
+            />
     </LinearLayout>
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:text=">>>"
-        android:layout_marginBottom="?attr/actionBarSize"/>
-    <TextView
-        android:id="@+id/num"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn"
-        android:text="1"
-        />
 
 
 
-</RelativeLayout>
+
+</ScrollView>

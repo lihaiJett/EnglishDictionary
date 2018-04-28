@@ -4,19 +4,28 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="当前选择的文件"/>
+
     <Button
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="选择xls文件"/>
 
-    <Button
-        android:id="@+id/entry"
+    <LinearLayout
+        android:id="@+id/quick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="开始学习"/>
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/curPath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="当前选择的文件"/>
+        <Button
+            android:id="@+id/entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="开始学习"/>
+    </LinearLayout>
+
 </LinearLayout>

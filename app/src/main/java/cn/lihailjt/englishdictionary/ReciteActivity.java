@@ -11,14 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.lihailjt.englishdictionary.dataprovider.MyWord;
+import cn.lihailjt.englishdictionary.dataprovider.WordListProvider;
 
 public class ReciteActivity extends AppCompatActivity {
 
@@ -57,7 +54,7 @@ public class ReciteActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    getExcelData(getIntent().getStringExtra("filePath"));
+                    wordList = WordListProvider.getExcelData(getIntent().getStringExtra("filePath"));
                     ReciteActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -108,39 +105,7 @@ public class ReciteActivity extends AppCompatActivity {
         }).start();
 
     }
-    public void getExcelData(String filePath) throws Exception {
 
-        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(new File(filePath)));
-        HSSFSheet sheet = null;
-        for (int i = 0; i < workbook.getNumberOfSheets(); i++) {// 获取每个Sheet表
-            sheet = workbook.getSheetAt(i);
-            for (int j = 0; j < sheet.getLastRowNum() + 1; j++) {// getLastRowNum，获取最后一行的行标
-                HSSFRow row = sheet.getRow(j);
-                if (row != null) {
-                    MyWord myWord = new MyWord();
-                    for (int k = 0; k < row.getLastCellNum(); k++) {// getLastCellNum，是获取最后一个不为空的列是第几个
-                        if (row.getCell(k) != null) { // getCell 获取单元格数据
-                            System.out.print("{"+k+"}"+row.getCell(k) + "\t");
-                            switch (k){
-                                case 0:
-                                    myWord.setWord(row.getCell(k).toString());
-                                case 1:
-                                    myWord.setMean(row.getCell(k).toString());
-                                case 2:
-                                    myWord.setNote(row.getCell(k).toString());
-                            }
-                        } else {
-                            System.out.print("\t");
-                        }
-                    }
-                    wordList.add(myWord);
-                    myWord.setNum(wordList.size());
-                }
-                System.out.println(""); // 读完一行后换行
-            }
-            System.out.println("读取sheet表：" + workbook.getSheetName(i) + " 完成");
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -207,14 +172,6 @@ public class ReciteActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION";
-                case 1:
-                    return "SECTION";
-                case 2:
-                    return "SECTION";
-            }
             return "SECTION";
         }
     }
