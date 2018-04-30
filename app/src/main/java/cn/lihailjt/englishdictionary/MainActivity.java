@@ -10,8 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.lihailjt.englishdictionary.userdata.UserData;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -38,18 +40,37 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+
+        onSet();
     }
+
+    private void onSet(){
+        final String url = UserData.get(MainActivity.this).getString(UserData.CURXLSFILE,"");
+        if(url.endsWith(".xls")){
+            findViewById(R.id.quick).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.curPath)).setText(url);
+            ((TextView)findViewById(R.id.curNum)).setText(String.valueOf(UserData.get(MainActivity.this).getInt(UserData.CURNUM,0)+1) );
+            (findViewById(R.id.entry)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this,ReciteActivity.class);
+                    intent.putExtra("filePath",url);
+                    startActivity(intent);
+                }
+            });
+        }else{
+            findViewById(R.id.quick).setVisibility(View.INVISIBLE);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {//是否选择，没选择就不会继续
             Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。
-            Toast.makeText(MainActivity.this, uri.toString(), Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(this,ReciteActivity.class);
-            intent.putExtra("filePath",uri.getPath());
-            startActivity(intent);
-
-
+            Toast.makeText(MainActivity.this, uri.getPath(), Toast.LENGTH_SHORT).show();
+            UserData.get(MainActivity.this).setPreference(UserData.CURXLSFILE,uri.getPath());
+            UserData.get(MainActivity.this).setPreference(UserData.CURNUM,0);
+            onSet();
 //            String[] proj = {MediaStore.Images.Media.DATA};
 //            Cursor actualimagecursor = getContentResolver().query(uri, proj, null, null, null);
 //            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

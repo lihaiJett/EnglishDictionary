@@ -1,4 +1,4 @@
-package cn.lihailjt.englishdictionary;
+package cn.lihailjt.englishdictionary.userdata;
 
 import android.content.Context;
 import android.content.SharedPreferences;

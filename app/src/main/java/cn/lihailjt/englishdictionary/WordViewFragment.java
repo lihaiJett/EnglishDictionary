@@ -2,11 +2,15 @@ package cn.lihailjt.englishdictionary;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.lihailjt.englishdictionary.dataprovider.MyWord;
 
@@ -21,23 +25,14 @@ public class WordViewFragment extends Fragment {
      * The fragment argument representing the section number for this
      * fragment.
      */
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
     interface NextPageController {
-        void toNext();
+        void toNext(MyWord myWord);
     }
 
-    TextView word;
-    TextView mean;
-    TextView note;
-    TextView num;
-    TextView phonetic_symbol;
-    TextView phrase;
-    TextView derivative;
-    TextView frequency;
-    TextView sentence;
     Button btn;
     MyWord myWord;
+    List<Pair<String, String>> fillPairs = new ArrayList<>();
     int stage;
     NextPageController mNextPageController;
 
@@ -52,11 +47,12 @@ public class WordViewFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static WordViewFragment newInstance(int sectionNumber) {
+    public static WordViewFragment newInstance(MyWord myWord) {
         WordViewFragment fragment = new WordViewFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+//        fragment.setArguments(args);
+        fragment.setWord(myWord);
         return fragment;
     }
 
@@ -65,53 +61,41 @@ public class WordViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recite, container, false);
 
-        word = (TextView) rootView.findViewById(R.id.word);
-        mean = (TextView) rootView.findViewById(R.id.mean);
-        note = (TextView) rootView.findViewById(R.id.note);
-        num = (TextView) rootView.findViewById(R.id.num);
+        ViewGroup textLayout = (ViewGroup) rootView.findViewById(R.id.textlayout);
+        for(Pair<String,String> p: fillPairs){
+            View v = inflater.inflate(R.layout.recite_item,textLayout,false);
+            ((TextView) v.findViewById(R.id.key)).setText(p.first);
+            ((TextView) v.findViewById(R.id.value)).setText(p.second);
+            textLayout.addView(v);
+        }
+        ((TextView) rootView.findViewById(R.id.num)).setText(stage+"");
+
         btn = (Button) rootView.findViewById(R.id.btn);
-
-        phonetic_symbol = (TextView) rootView.findViewById(R.id.phonetic_symbol);
-        phrase = (TextView) rootView.findViewById(R.id.phrase);
-        derivative = (TextView) rootView.findViewById(R.id.derivative);
-        frequency = (TextView) rootView.findViewById(R.id.frequency);
-        sentence = (TextView) rootView.findViewById(R.id.sentence);
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 next();
             }
         });
-        word.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        //word.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
-        setWord(myWord);
         return rootView;
     }
 
     public void setWord(MyWord myWord) {
         this.myWord = myWord;
-        if (word != null && myWord != null) {
-            num.setText(String.valueOf(myWord.getNum()));
-            word.setText(String.valueOf(myWord.getWord()));
-
-            phonetic_symbol.setText(String.valueOf(myWord.getPhonetic_symbol()));
-            phrase.setText(String.valueOf(myWord.getPhrase()));
-            derivative.setText(String.valueOf(myWord.getDerivative()));
-            frequency.setText(String.valueOf(myWord.getFrequency()));
-            sentence.setText(String.valueOf(myWord.getSentence()));
-
-            mean.setText(String.valueOf(myWord.getMean()));
-            note.setText(String.valueOf(myWord.getNote()));
-
-//            mean.setVisibility(View.INVISIBLE);
-//            note.setVisibility(View.INVISIBLE);
-            stage = 0;
-        }
+        fillPairs.add(new Pair<>("单词", myWord.getWord()));
+        fillPairs.add(new Pair<>("英标", myWord.getPhonetic_symbol()));
+        fillPairs.add(new Pair<>("释义", myWord.getMean()));
+        fillPairs.add(new Pair<>("词组", myWord.getPhrase()));
+        fillPairs.add(new Pair<>("派生词", myWord.getDerivative()));
+        fillPairs.add(new Pair<>("考频", myWord.getFrequency()));
+        fillPairs.add(new Pair<>("例句", myWord.getSentence()));
+        stage = myWord.getNum();
     }
 
     public void next() {
-        mNextPageController.toNext();
+        mNextPageController.toNext(myWord);
 //        switch (stage) {
 //            case 0:
 //                mean.setVisibility(View.VISIBLE);
