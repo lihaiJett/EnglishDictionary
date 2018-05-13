@@ -5,12 +5,12 @@
     android:gravity="center"
     android:orientation="vertical">
 
-
+    <!--选择xls文件-->
     <Button
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="选择xls文件" />
+        android:text="@string/MainActivity_selectFile" />
 
     <LinearLayout
         android:id="@+id/quick"
@@ -20,29 +20,50 @@
         android:orientation="vertical"
         android:visibility="invisible">
 
+        <!--当前选择的文件-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前选择的文件:"/>
+            android:text="@string/MainActivity_curFile"/>
         <TextView
             android:id="@+id/curPath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
              />
+        <!--当前看到的序号-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前看到的序号:"/>
+            android:text="@string/MainActivity_curNum"/>
         <TextView
             android:id="@+id/curNum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+        <!--开始学习-->
         <Button
             android:id="@+id/entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="开始学习" />
+            android:text="@string/MainActivity_start" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/word"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <ImageButton
+            android:id="@+id/playSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_media_play"
+            />
+    </LinearLayout>
+
 
 </LinearLayout>

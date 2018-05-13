@@ -13,15 +13,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import cn.lihailjt.englishdictionary.http.Retrofits;
+import cn.lihailjt.englishdictionary.http.shanbei.ShanbeiApi;
 import cn.lihailjt.englishdictionary.userdata.UserData;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
-/**
- * Created by Administrator on 2018/4/22 0022.
- */
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -39,6 +42,34 @@ public class MainActivity extends AppCompatActivity {
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent,1);
             }
+        });
+
+        findViewById(R.id.playSound).setOnClickListener(v -> {
+            String word = ((TextView) findViewById(R.id.word)).getText().toString();
+            if(!word.trim().isEmpty()) {
+                MyMediaplayer.get().playWordSound(MainActivity.this, word);
+            }
+//            Retrofits.get(ShanbeiApi.class)
+//                    .getServerInfo()
+//                    //指定在IO线程进行网络请求
+//                    .subscribeOn(Schedulers.io())
+//                    //指定订阅者在UI线程响应
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    //处理结果
+//                    .subscribe(result -> {
+////                        Toast.makeText(this,
+////                        if (result.isSuccess()) {
+////                            Toast.makeText(this,
+////                                    result.getData().toString(),
+////                                    Toast.LENGTH_SHORT)
+////                                    .show();
+////                        }else {
+////                            Toast.makeText(this,
+////                                    String.format("失败：%s", result.getMessage()),
+////                                    Toast.LENGTH_SHORT)
+////                                    .show();
+////                        }
+//                    });
         });
 
         onSet();
@@ -66,18 +97,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {//是否选择，没选择就不会继续
-            Uri uri = data.getData();//得到uri，后面就是将uri转化成file的过程。
+            Uri uri = data.getData();//得到uri
             Toast.makeText(MainActivity.this, uri.getPath(), Toast.LENGTH_SHORT).show();
             UserData.get(MainActivity.this).setPreference(UserData.CURXLSFILE,uri.getPath());
             UserData.get(MainActivity.this).setPreference(UserData.CURNUM,0);
             onSet();
-//            String[] proj = {MediaStore.Images.Media.DATA};
-//            Cursor actualimagecursor = getContentResolver().query(uri, proj, null, null, null);
-//            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            actualimagecursor.moveToFirst();
-//            String img_path = actualimagecursor.getString(actual_image_column_index);
-//            File file = new File(img_path);
-//            Toast.makeText(MainActivity.this, uri.toString(), Toast.LENGTH_SHORT).show();
         }
     }
     /** 
@@ -99,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void showContacts() {
-        Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(getApplicationContext(), "成功获取权限", Toast.LENGTH_SHORT).show();
     }
     /** 
      * 权限请求回调，提示用户之后，用户点击“允许”或者“拒绝”之后调用此方法 

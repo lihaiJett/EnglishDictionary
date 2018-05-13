@@ -47,7 +47,7 @@ public class ReciteActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,6 @@ public class ReciteActivity extends AppCompatActivity {
 //        setSupportActionBar(toolbar);
 
 
-        mediaPlayer = new MediaPlayer();
 
 
 
@@ -172,21 +171,8 @@ public class ReciteActivity extends AppCompatActivity {
 //                    if(mViewPager.getCurrentItem()+1 < mViewPager.getAdapter().getCount()){
 //                        mViewPager.setCurrentItem(mViewPager.getCurrentItem()+1);
 //                    }
-                    Uri uri = Uri.parse("http://dict.youdao.com/dictvoice?audio="+myWord.getWord());
-                    try {
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.setDataSource(ReciteActivity.this,uri);
-                        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                            @Override
-                            public void onPrepared(MediaPlayer mp) {
-                                mp.start();
-                            }
-                        });
-                        mediaPlayer.prepareAsync();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+                    MyMediaplayer.get().playWordSound(ReciteActivity.this,myWord.getWord());
                 }
             });
 //            WordViewFragment p = WordViewFragment.newInstance(1);
